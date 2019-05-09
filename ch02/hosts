@@ -1,0 +1,5 @@
+testserver ansible_host=ec2-18-223-111-253.us-east-2.compute.amazonaws.com ansible_user=ubuntu ansible_private_key_file=/home/michael/.ssh/aws.pem
+vagrantserver ansible_host=127.0.0.1 ansible_port=2222 ansible_user=vagrant ansible_private_key_file=.vagrant/machines/default/virtualbox/private_key
+
+[webservers]
+vagrantserver ansible_host=127.0.0.1 ansible_port=2222
