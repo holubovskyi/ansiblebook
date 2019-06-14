@@ -5,3 +5,4 @@ ch08/playbooks/secrets.yml
 *.retry
 *.pyc
 *.log
+.idea

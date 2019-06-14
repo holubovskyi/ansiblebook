@@ -15,7 +15,8 @@
     domains:
       - 192.168.33.10.xip.io
       - www.192.168.33.10.xip.io
-    repo_url: https://github.com/ansiblebook/mezzanine_example.git
+    #repo_url: https://github.com/ansiblebook/mezzanine_example.git
+    repo_url: https://github.com/jethigh/mezzanine_example.git
     locale: en_US.UTF-8
     # Variables below don't appear in Mezannine's fabfile.py
     # but I've added them for convenience
@@ -28,6 +29,7 @@
     database_port: 5432
     gunicorn_procname: gunicorn_mezzanine
     num_workers: "multiprocessing.cpu_count() * 2 + 1"
+
   vars_files:
     - secrets.yml
 
@@ -43,9 +45,12 @@
         - nginx
         - postgresql
         - python
+        - python3
         - python-dev
         - python-pip
+        - python3-pip
         - python-psycopg2
+        - python3-psycopg2
         - python-setuptools
         - python-virtualenv
         - supervisor
@@ -158,6 +163,7 @@
       with_items:
         - migrate
         - collectstatic
+
     - name: set the site id
       script: scripts/setsite.py
       environment:
@@ -165,6 +171,7 @@
         PROJECT_DIR: "{{ proj_path }}"
         PROJECT_APP: "{{ proj_app }}"
         WEBSITE_DOMAIN: "{{ live_hostname }}"
+
     - name: set the admin password
       script: scripts/setadmin.py
       environment:
@@ -172,10 +179,12 @@
         PROJECT_DIR: "{{ proj_path }}"
         PROJECT_APP: "{{ proj_app }}"
         ADMIN_PASSWORD: "{{ admin_pass }}"
+
   handlers:
     - name: restart supervisor
       supervisorctl: "name={{ gunicorn_procname }} state=restarted"
       become: True
+
     - name: restart nginx
       service: name=nginx state=restarted
       become: True
